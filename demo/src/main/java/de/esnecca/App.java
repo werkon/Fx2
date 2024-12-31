@@ -1,8 +1,10 @@
 package de.esnecca;
 
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
@@ -12,7 +14,7 @@ import java.io.IOException;
 /**
  * JavaFX App
  */
-public class App extends Application {
+public class App extends Application implements EventHandler<javafx.scene.input.MouseEvent> {
 
     private static Scene scene;
     private static final int IMAGE_WIDTH = 2400;
@@ -30,7 +32,6 @@ public class App extends Application {
         start.setOnAction(e->{
             xCanvas.set(10, 10, 255, 0, 0);
             xCanvas.paint();
-            xCanvas.set(10, 10, 0, 255, 0);
         });
         Button stop = new Button("Stop");
 
@@ -39,7 +40,7 @@ public class App extends Application {
         BorderPane borderPane = new BorderPane();
         borderPane.setTop(topMenu);
 
-        xCanvas = new XCanvas(IMAGE_WIDTH, IMAGE_HEIGHT);
+        xCanvas = new XCanvas(IMAGE_WIDTH, IMAGE_HEIGHT, this);
         borderPane.setCenter(xCanvas.getCanvas());
 
         scene = new Scene(borderPane);
@@ -52,5 +53,12 @@ public class App extends Application {
     public static void main(String[] args) {
         launch();
     }
+
+    @Override
+    public void handle(MouseEvent e) {
+        System.out.println("Mouse clicked at " + e.getX() + ", " + e.getY());
+        xCanvas.set((int) e.getX(), (int) e.getY(), 0, 0, 255);
+        xCanvas.paint();
+}
 
 }

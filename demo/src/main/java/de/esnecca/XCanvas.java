@@ -1,5 +1,6 @@
 package de.esnecca;
 
+import javafx.event.EventHandler;
 import java.nio.ByteBuffer;
 
 import javafx.scene.canvas.Canvas;
@@ -16,12 +17,17 @@ public class XCanvas {
     byte imageData[];
     PixelWriter pixelWriter;
     PixelFormat<ByteBuffer> pixelFormat;
+    EventHandler<javafx.scene.input.MouseEvent> eventHandler;
 
-    XCanvas(int width, int height) {
+    XCanvas(int width, int height, EventHandler<javafx.scene.input.MouseEvent> eventHandler) {
         this.width = width;
         this.height = height;
+        this.eventHandler = eventHandler;
 
         canvas = new Canvas(width, height);
+        canvas.setOnMouseClicked(e -> {
+            eventHandler.handle(e);
+        });
         gc = canvas.getGraphicsContext2D();
         imageData = new byte[width * height * 3];
 
@@ -33,9 +39,10 @@ public class XCanvas {
     }
 
     public void set(int x, int y, int r, int g, int b) {
-        imageData[(x + y * width) * 3] = (byte) r;
-        imageData[(x + y * width) * 3 + 1] = (byte) g;
-        imageData[(x + y * width) * 3 + 2] = (byte) b;
+        int off = (x + y * width) * 3;
+        imageData[off] = (byte) r;
+        imageData[off + 1] = (byte) g;
+        imageData[off + 2] = (byte) b;
     }
 
     public void clear() {
