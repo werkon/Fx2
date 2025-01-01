@@ -20,7 +20,7 @@
             "type": "java",
             "name": "App",
             "request": "launch",
-            "mainClass": "com.example/com.example.App",
+            "mainClass": "de.esnecca/de.esnecca.App",
             "projectName": "demo"
         }
     ]

@@ -17,17 +17,12 @@ public class XCanvas {
     byte imageData[];
     PixelWriter pixelWriter;
     PixelFormat<ByteBuffer> pixelFormat;
-    EventHandler<javafx.scene.input.MouseEvent> eventHandler;
 
-    XCanvas(int width, int height, EventHandler<javafx.scene.input.MouseEvent> eventHandler) {
+    XCanvas(int width, int height) {
         this.width = width;
         this.height = height;
-        this.eventHandler = eventHandler;
 
         canvas = new Canvas(width, height);
-        canvas.setOnMouseClicked(e -> {
-            eventHandler.handle(e);
-        });
         gc = canvas.getGraphicsContext2D();
         imageData = new byte[width * height * 3];
 
@@ -36,6 +31,13 @@ public class XCanvas {
 
         clear();
         paint();
+    }
+
+
+    public void setEventListener(EventHandler<javafx.scene.input.MouseEvent> eventHandler) {
+        canvas.setOnMouseClicked(e -> {
+            eventHandler.handle(e);
+        });
     }
 
     public void set(int x, int y, int r, int g, int b) {

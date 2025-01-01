@@ -1,4 +1,4 @@
-module com.example {
+module de.esnecca {
     requires javafx.controls;
     requires javafx.fxml;
 

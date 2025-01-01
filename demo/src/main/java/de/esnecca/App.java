@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -14,13 +15,14 @@ import java.io.IOException;
 /**
  * JavaFX App
  */
-public class App extends Application implements EventHandler<javafx.scene.input.MouseEvent> {
+public class App extends Application {
 
     private static Scene scene;
     private static final int IMAGE_WIDTH = 2400;
     private static final int IMAGE_HEIGHT = 1200;
 
     private static XCanvas xCanvas;
+    private static XMachine xMachine;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -40,8 +42,14 @@ public class App extends Application implements EventHandler<javafx.scene.input.
         BorderPane borderPane = new BorderPane();
         borderPane.setTop(topMenu);
 
-        xCanvas = new XCanvas(IMAGE_WIDTH, IMAGE_HEIGHT, this);
-        borderPane.setCenter(xCanvas.getCanvas());
+        xCanvas = new XCanvas(IMAGE_WIDTH, IMAGE_HEIGHT);
+
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setContent(xCanvas.getCanvas());
+
+        borderPane.setCenter(scrollPane);
+
+        xMachine = new XMachine(IMAGE_WIDTH, IMAGE_HEIGHT, xCanvas);
 
         scene = new Scene(borderPane);
         stage.setScene(scene);
@@ -54,11 +62,5 @@ public class App extends Application implements EventHandler<javafx.scene.input.
         launch();
     }
 
-    @Override
-    public void handle(MouseEvent e) {
-        System.out.println("Mouse clicked at " + e.getX() + ", " + e.getY());
-        xCanvas.set((int) e.getX(), (int) e.getY(), 0, 0, 255);
-        xCanvas.paint();
-}
 
 }
