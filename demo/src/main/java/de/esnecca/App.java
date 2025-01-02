@@ -31,10 +31,18 @@ public class App extends Application {
         Button size = new Button("Size");
         size.setOnAction(e -> stage.sizeToScene());
         Button start = new Button("Start");
-        start.setOnAction(e->{
-            xMachine.iterate();
-        });
         Button stop = new Button("Stop");
+        start.setOnAction(e->{
+            xMachine.start();
+            start.setDisable(true);
+            stop.setDisable(false);
+        });
+        stop.setOnAction(e->{
+            xMachine.stopIt();
+            stop.setDisable(true);
+            start.setDisable(false);
+        });
+
 
         topMenu.getChildren().addAll(size, start, stop);
 
@@ -52,6 +60,8 @@ public class App extends Application {
 
         scene = new Scene(borderPane);
         stage.setScene(scene);
+
+        stage.setOnCloseRequest(e->{ xMachine.stopItAll(); });
 
         stage.setTitle("FX");
         stage.show();

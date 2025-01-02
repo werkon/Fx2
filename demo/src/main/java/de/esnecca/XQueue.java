@@ -30,4 +30,8 @@ public class XQueue {
         return ll.isEmpty();
     }
 
+    public synchronized int size() {
+        return ll.size();
+    }
+
 }

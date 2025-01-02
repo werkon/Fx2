@@ -1,10 +1,9 @@
 package de.esnecca;
 
-import java.util.LinkedList;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 
-public class XMachine implements EventHandler<javafx.scene.input.MouseEvent> {
+public class XMachine extends Thread implements EventHandler<javafx.scene.input.MouseEvent> {
 
     private int width;
     private int height;
@@ -13,11 +12,14 @@ public class XMachine implements EventHandler<javafx.scene.input.MouseEvent> {
     private XField field;
     private XQueue todo;
     private XQueue done;
+    private XThread xThread[];
+    private XMainThread xMainThread;
 
     XMachine(int width, int height, XCanvas xCanvas) {
         this.width = width;
         this.height = height;
         this.xCanvas = xCanvas;
+
 
         field = new XField(width, height);
         todo = new XQueue();
@@ -29,13 +31,66 @@ public class XMachine implements EventHandler<javafx.scene.input.MouseEvent> {
             }
         }
 
+        xThread = new XThread[32];
+        for (int i = 0; i < xThread.length; i++) {
+            xThread[i] = new XThread(this);
+            xThread[i].start();
+        }
+
+        xMainThread = new XMainThread(this);
+
         xCanvas.setEventListener(this);
 
     }
 
+    @Override
+    public void start() {
+        if(xMainThread != null){
+            xMainThread.stopIt();
+        }
+        xMainThread = new XMainThread(this);
+        xMainThread.start();
+    }
+
+    public void stopIt() {
+        xMainThread.stopIt();
+    }
+
+    public void stopItAll() {
+       stopIt();
+       for(int i = 0; i < xThread.length; i++){
+           xThread[i].stopIt();
+       }
+    }
+
+
     public void iterate() {
-        
-        xCanvas.paint();
+            doneToDo();
+            while (!todo.isEmpty()) {
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
+                }
+            }
+
+            for (int i = 0; i < width; i++) {
+                for (int j = 0; j < height; j++) {
+                    XObject xObject = field.getAndLock(i, j);
+                    xCanvas.set(i, j, xObject.getR(), xObject.getG(), xObject.getB());
+                    xObject.getLock().unlock();
+                }
+            }
+    
+            xCanvas.paint();
+    }
+
+    public void step() {
+        XObject xObject = pullTodo();
+        if (xObject != null) {
+            xObject.iterate();
+            xObject.getLock().unlock();
+            done.add(xObject);
+        }
     }
 
     private void createNewGrass(int i, int j) {
@@ -61,10 +116,10 @@ public class XMachine implements EventHandler<javafx.scene.input.MouseEvent> {
     public XObject pullTodo() {
         while (!todo.isEmpty()) {
             XObject xObject = todo.getAndLock();
-            if (xObject != null ){
-                if(xObject.isAlive()) {
+            if (xObject != null) {
+                if (xObject.isAlive()) {
                     return xObject;
-                }else{
+                } else {
                     xObject.getLock().unlock();
                 }
             }
@@ -73,6 +128,7 @@ public class XMachine implements EventHandler<javafx.scene.input.MouseEvent> {
     }
 
     public synchronized void doneToDo() {
+        System.out.println("doneToDo: " + done.size());
         todo = done;
         done = new XQueue();
     }
