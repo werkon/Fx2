@@ -1,5 +1,64 @@
 package de.esnecca;
 
-public class XObject {
+import java.util.concurrent.locks.ReentrantLock;
 
+public class XObject {
+    int x, y;
+    boolean isAlive;
+    ReentrantLock lock;
+
+    XObject(int x, int y) {
+        this.x = x;
+        this.y = y;
+        isAlive = true;
+        lock = new ReentrantLock();
+    }
+
+    public ReentrantLock getLock() {
+        return lock;
+    }
+
+    public boolean isAlive() {
+        return isAlive;
+    }
+
+    public void kill() {
+        isAlive = false;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public boolean isStatic() {
+        return true;
+    }
+    
+    public void iterate() {
+
+    }
+
+    public int getR() {
+        return 0;
+    }
+
+    public int getG() {
+        return 0;
+    }
+
+    public int getB() {
+        return 0;
+    }
 }

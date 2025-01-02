@@ -32,8 +32,7 @@ public class App extends Application {
         size.setOnAction(e -> stage.sizeToScene());
         Button start = new Button("Start");
         start.setOnAction(e->{
-            xCanvas.set(10, 10, 255, 0, 0);
-            xCanvas.paint();
+            xMachine.iterate();
         });
         Button stop = new Button("Stop");
 
