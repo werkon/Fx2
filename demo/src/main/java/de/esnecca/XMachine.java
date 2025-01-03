@@ -12,14 +12,13 @@ public class XMachine extends Thread implements EventHandler<javafx.scene.input.
     private XField field;
     private XQueue todo;
     private XQueue done;
-    private XThread xThread[];
+    private XThread xThreads[];
     private XMainThread xMainThread;
 
     XMachine(int width, int height, XCanvas xCanvas) {
         this.width = width;
         this.height = height;
         this.xCanvas = xCanvas;
-
 
         field = new XField(width, height);
         todo = new XQueue();
@@ -31,10 +30,10 @@ public class XMachine extends Thread implements EventHandler<javafx.scene.input.
             }
         }
 
-        xThread = new XThread[32];
-        for (int i = 0; i < xThread.length; i++) {
-            xThread[i] = new XThread(this);
-            xThread[i].start();
+        xThreads = new XThread[32];
+        for (int i = 0; i < xThreads.length; i++) {
+            xThreads[i] = new XThread(this);
+            xThreads[i].start();
         }
 
         xMainThread = new XMainThread(this);
@@ -45,8 +44,8 @@ public class XMachine extends Thread implements EventHandler<javafx.scene.input.
 
     @Override
     public void start() {
-        if(xMainThread != null){
-            xMainThread.stopIt();
+        if (xMainThread != null) {
+            stopIt();
         }
         xMainThread = new XMainThread(this);
         xMainThread.start();
@@ -54,34 +53,45 @@ public class XMachine extends Thread implements EventHandler<javafx.scene.input.
 
     public void stopIt() {
         xMainThread.stopIt();
+        while (xMainThread.isAlive()) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+            }
+        }
     }
 
     public void stopItAll() {
-       stopIt();
-       for(int i = 0; i < xThread.length; i++){
-           xThread[i].stopIt();
-       }
-    }
-
-
-    public void iterate() {
-            doneToDo();
-            while (!todo.isEmpty()) {
+        stopIt();
+        for (int i = 0; i < xThreads.length; i++) {
+            xThreads[i].stopIt();
+            while (xThreads[i].isAlive()) {
                 try {
                     Thread.sleep(100);
                 } catch (InterruptedException e) {
                 }
             }
+        }
+    }
 
-            for (int i = 0; i < width; i++) {
-                for (int j = 0; j < height; j++) {
-                    XObject xObject = field.getAndLock(i, j);
-                    xCanvas.set(i, j, xObject.getR(), xObject.getG(), xObject.getB());
-                    xObject.getLock().unlock();
-                }
+    public void iterate() {
+        doneToDo();
+        while (!todo.isEmpty()) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
             }
-    
-            xCanvas.paint();
+        }
+
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                XObject xObject = field.getAndLock(i, j);
+                xCanvas.set(i, j, xObject.getR(), xObject.getG(), xObject.getB());
+                xObject.getLock().unlock();
+            }
+        }
+
+        xCanvas.paint();
     }
 
     public void step() {

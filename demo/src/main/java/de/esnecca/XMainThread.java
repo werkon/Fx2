@@ -3,13 +3,11 @@ package de.esnecca;
 public class XMainThread extends Thread {
 
     private XMachine xMachine;
-    private boolean running;
     private boolean toStop;
 
     XMainThread(XMachine xMachine) {
         super();
         this.xMachine = xMachine;
-        running = false;
         toStop = false;
     }
 
@@ -20,23 +18,17 @@ public class XMainThread extends Thread {
         while(!toStop){
             xMachine.iterate();
         }
-        running = false;
         toStop = false;
     }
 
     public void start() {
-        if(!running){
-            running = true;
+        if(!isAlive()){
             super.start();
         }
     }
 
     public void stopIt() {
         toStop = true;
-    }
-
-    public boolean isRunning() {
-        return running;
     }
 
 }
