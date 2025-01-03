@@ -2,38 +2,40 @@ package de.esnecca;
 
 public class XSheep extends XObject {
 
-    public int getAge() {
-        return age;
+    public int getFood() {
+        return food;
     }
 
-    public void setAge(int age) {
-        this.age = age;
+    public void setFood(int age) {
+        this.food = age;
     }
 
-    int age;
+    int food;
+    XMachine xMachine;
 
-    XSheep(int x, int y) {
+    XSheep(int x, int y, XMachine xMachine) {
         super(x, y);
-        age = 255 / 2;
+        this.xMachine = xMachine;
+        food = 255 / 2;
     }
 
     @Override
     public void iterate() {
         super.iterate();
-        if(++age > 255){
-            age = 255;
+        if(--food <= 0){
+            xMachine.createNewGrass(x, y);
         }
 
     }
 
     @Override
     public int getG() {
-        return age;
+        return food;
     }
 
     @Override
     public int getR() {
-        return age;
+        return food;
     }
 
 }

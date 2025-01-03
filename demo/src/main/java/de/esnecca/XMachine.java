@@ -98,15 +98,17 @@ public class XMachine extends Thread implements EventHandler<javafx.scene.input.
     }
 
     public void step() {
-        XObject xObject = pullTodo();
+        XObject xObject = getTodoAndLock();
         if (xObject != null) {
             xObject.iterate();
             xObject.getLock().unlock();
-            done.add(xObject);
+            if(xObject.isAlive()){
+                done.add(xObject);
+            }
         }
     }
 
-    private void createNewGrass(int i, int j) {
+    public void createNewGrass(int i, int j) {
         XGrass xGrass = new XGrass(i, j);
         setNew(i, j, xGrass);
     }
@@ -125,11 +127,11 @@ public class XMachine extends Thread implements EventHandler<javafx.scene.input.
     public void handle(MouseEvent e) {
         System.out.println("Mouse clicked at " + e.getX() + ", " + e.getY());
 
-        XObject xSheep = new XSheep((int) e.getX(), (int) e.getY());
+        XObject xSheep = new XSheep((int) e.getX(), (int) e.getY(), this);
         setNew((int)e.getX(), (int)e.getY(), xSheep);
     }
 
-    public XObject pullTodo() {
+    public XObject getTodoAndLock() {
         while (!todo.isEmpty()) {
             XObject xObject = todo.getAndLock();
             if (xObject != null) {
