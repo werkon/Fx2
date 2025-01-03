@@ -82,7 +82,10 @@ public class XMachine extends Thread implements EventHandler<javafx.scene.input.
             } catch (InterruptedException e) {
             }
         }
+        paintField();
+    }
 
+    private void paintField() {
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 XObject xObject = field.getAndLock(i, j);
