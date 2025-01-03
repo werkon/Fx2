@@ -113,17 +113,20 @@ public class XMachine extends Thread implements EventHandler<javafx.scene.input.
 
     private void setNew(int i, int j, XObject xObject) {
         XObject old = field.getAndLock(i, j);
-        old.kill();
-        old.getLock().unlock();
-        field.set(i, j, xObject);
-        done.add(xObject);
+        if( old != null){
+            old.kill();
+            old.getLock().unlock();
+            field.set(i, j, xObject);
+            done.add(xObject);
+        }
     }
 
     @Override
     public void handle(MouseEvent e) {
         System.out.println("Mouse clicked at " + e.getX() + ", " + e.getY());
-        xCanvas.set((int) e.getX(), (int) e.getY(), 0, 0, 255);
-        xCanvas.paint();
+
+        XObject xSheep = new XSheep((int) e.getX(), (int) e.getY());
+        setNew((int)e.getX(), (int)e.getY(), xSheep);
     }
 
     public XObject pullTodo() {
