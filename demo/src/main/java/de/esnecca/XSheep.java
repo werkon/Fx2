@@ -1,9 +1,6 @@
 package de.esnecca;
 
-public class XSheep extends XObject {
-
-    static int[] dx = {-1, -1, -1,  0, 0,  1, 1, 1};
-    static int[] dy = {-1,  0,  1, -1, 1, -1, 0, 1};
+public class XSheep extends XLock {
 
     public int getFood() {
         return food;
@@ -26,7 +23,7 @@ public class XSheep extends XObject {
     public boolean iterate() {
         super.iterate();
 
-        food -= 5;
+        food -=2;
 
         if(food <= 0){
             xMachine.createNewGrass(x, y);
@@ -38,8 +35,8 @@ public class XSheep extends XObject {
         int random = (int)(Math.random() * 8);
         for(int i = 0; i < 8; i++){
             int dr = (i + random) % 8;
-            int nx = (getX() + dx[dr] + xMachine.getWidth()) % xMachine.getWidth();
-            int ny = (getY() + dy[dr] + xMachine.getHeight()) % xMachine.getHeight();
+            int nx = (getX() + XLock.dx[dr] + xMachine.getWidth()) % xMachine.getWidth();
+            int ny = (getY() + XLock.dy[dr] + xMachine.getHeight()) % xMachine.getHeight();
 
             XObject xObject = xMachine.getAndLock(nx, ny);
             if(xObject == null){

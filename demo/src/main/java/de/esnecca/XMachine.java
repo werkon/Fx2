@@ -30,6 +30,12 @@ public class XMachine extends Thread implements EventHandler<javafx.scene.input.
             }
         }
 
+        for(int i = 0; i < 1000; i++){
+            int x = (int)(Math.random() * width);
+            int y = (int)(Math.random() * height);
+            createNewSheep(x, y);
+        }
+
         xThreads = new XThread[32];
         for (int i = 0; i < xThreads.length; i++) {
             xThreads[i] = new XThread(this);
@@ -120,6 +126,12 @@ public class XMachine extends Thread implements EventHandler<javafx.scene.input.
         XGrass xGrass = new XGrass(i, j);
         setNew(i, j, xGrass);
     }
+
+    public void createNewSheep(int i, int j) {
+        XSheep xSheep = new XSheep(i, j, this);
+        setNew(i, j, xSheep);
+    }
+
 
     public void setNew(int i, int j, XObject xObject) {
         XObject old = field.getAndLock(i, j);
