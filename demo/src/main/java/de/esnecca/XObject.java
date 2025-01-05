@@ -46,8 +46,8 @@ public class XObject {
         return true;
     }
     
-    public void iterate() {
-
+    public boolean iterate() {
+        return true;
     }
 
     public int getR() {

@@ -100,10 +100,14 @@ public class XMachine extends Thread implements EventHandler<javafx.scene.input.
     public void step() {
         XObject xObject = getTodoAndLock();
         if (xObject != null) {
-            xObject.iterate();
+            boolean ok = xObject.iterate();
             xObject.getLock().unlock();
-            if(xObject.isAlive()){
-                done.add(xObject);
+            if(ok){
+                if(xObject.isAlive()){
+                    done.add(xObject);
+                }
+            }else{
+                todo.add(xObject);
             }
         }
     }
@@ -149,6 +153,10 @@ public class XMachine extends Thread implements EventHandler<javafx.scene.input.
         System.out.println("doneToDo: " + done.size());
         todo = done;
         done = new XQueue();
+    }
+
+    public XObject getAndLock(int i, int j) {
+        return field.getAndLock(i, j);
     }
 
 }

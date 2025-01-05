@@ -18,12 +18,12 @@ public class XGrass extends XObject {
     }
 
     @Override
-    public void iterate() {
+    public boolean iterate() {
         super.iterate();
         if(++age > 255){
             age = 255;
         }
-
+        return true;
     }
 
     @Override

@@ -20,12 +20,12 @@ public class XSheep extends XObject {
     }
 
     @Override
-    public void iterate() {
+    public boolean iterate() {
         super.iterate();
         if(--food <= 0){
             xMachine.createNewGrass(x, y);
         }
-
+        return true;
     }
 
     @Override
