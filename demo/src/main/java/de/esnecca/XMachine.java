@@ -26,13 +26,13 @@ public class XMachine extends Thread implements EventHandler<javafx.scene.input.
 
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
-                createNewGrass(i, j);
+                createNewGrass(i, j, 255 / 2);
             }
         }
 
-        for(int i = 0; i < 1000; i++){
-            int x = (int)(Math.random() * width);
-            int y = (int)(Math.random() * height);
+        for (int i = 0; i < 1000; i++) {
+            int x = (int) (Math.random() * width);
+            int y = (int) (Math.random() * height);
             createNewSheep(x, y);
         }
 
@@ -111,19 +111,20 @@ public class XMachine extends Thread implements EventHandler<javafx.scene.input.
         XObject xObject = getTodoAndLock();
         if (xObject != null) {
             boolean ok = xObject.iterate();
-            if(ok){
-                if(xObject.isAlive()){
+            if (ok) {
+                if (xObject.isAlive()) {
                     done.add(xObject);
                 }
-            }else{
+            } else {
                 todo.add(xObject);
             }
-            xObject.getLock().unlock();	
+            xObject.getLock().unlock();
         }
     }
 
-    public void createNewGrass(int i, int j) {
+    public void createNewGrass(int i, int j, int age) {
         XGrass xGrass = new XGrass(i, j);
+        xGrass.setAge(age);
         setNew(i, j, xGrass);
     }
 
@@ -132,10 +133,9 @@ public class XMachine extends Thread implements EventHandler<javafx.scene.input.
         setNew(i, j, xSheep);
     }
 
-
     public void setNew(int i, int j, XObject xObject) {
         XObject old = field.getAndLock(i, j);
-        if( old != null){
+        if (old != null) {
             old.kill();
             setAndDone(i, j, xObject);
             old.getLock().unlock();
@@ -151,13 +151,12 @@ public class XMachine extends Thread implements EventHandler<javafx.scene.input.
         done.add(xObject);
     }
 
-
     @Override
     public void handle(MouseEvent e) {
         System.out.println("Mouse clicked at " + e.getX() + ", " + e.getY());
 
         XObject xSheep = new XSheep((int) e.getX(), (int) e.getY(), this);
-        setNew((int)e.getX(), (int)e.getY(), xSheep);
+        setNew((int) e.getX(), (int) e.getY(), xSheep);
     }
 
     public XObject getTodoAndLock() {
@@ -168,7 +167,7 @@ public class XMachine extends Thread implements EventHandler<javafx.scene.input.
                     return xObject;
                 } else {
                     xObject.getLock().unlock();
-//                    System.out.println("Dead object found");
+                    // System.out.println("Dead object found");
                 }
             }
         }
@@ -178,7 +177,6 @@ public class XMachine extends Thread implements EventHandler<javafx.scene.input.
     public synchronized void doneToDo() {
         System.out.print("doneToDo: " + done.size() + " ");
         done.ana();
-
 
         todo = done;
         done = new XQueue();

@@ -23,25 +23,25 @@ public class XSheep extends XLock {
     public boolean iterate() {
         super.iterate();
 
-        food -=2;
+        food -= 10;
 
-        if(food <= 0){
-            xMachine.createNewGrass(x, y);
+        if (food <= 0) {
+            xMachine.createNewGrass(x, y, 0);
             return true;
         }
 
         XObject xObjects[] = new XObject[8];
 
-        int random = (int)(Math.random() * 8);
-        for(int i = 0; i < 8; i++){
+        int random = (int) (Math.random() * 8);
+        for (int i = 0; i < 8; i++) {
             int dr = (i + random) % 8;
             int nx = (getX() + XLock.dx[dr] + xMachine.getWidth()) % xMachine.getWidth();
             int ny = (getY() + XLock.dy[dr] + xMachine.getHeight()) % xMachine.getHeight();
 
             XObject xObject = xMachine.getAndLock(nx, ny);
-            if(xObject == null){
-                for(int j = 0; j < 8; j++){
-                    if(xObjects[j] != null){
+            if (xObject == null) {
+                for (int j = 0; j < 8; j++) {
+                    if (xObjects[j] != null) {
                         xObjects[j].getLock().unlock();
                     }
                 }
@@ -53,22 +53,22 @@ public class XSheep extends XLock {
 
         int idx = -1;
         int age = 0;
-        for(int i = 0; i < 8; i++){
-            if(xObjects[i] instanceof XGrass){
+        for (int i = 0; i < 8; i++) {
+            if (xObjects[i] instanceof XGrass) {
                 XGrass xGrass = (XGrass) xObjects[i];
-                if(xGrass.getAge() > age){
+                if (xGrass.getAge() > age) {
                     idx = i;
                     age = xGrass.getAge();
                 }
             }
         }
-        if( idx >= 0){
+        if (idx >= 0) {
             food += age / 10;
-            if(food > 255){
+            if (food > 255) {
                 food = 255 / 2;
                 XSheep xSheep = new XSheep(getX(), getY(), xMachine);
                 xMachine.setAndDone(getX(), getY(), xSheep);
-            }else{
+            } else {
                 XGrass xGrass = new XGrass(getX(), getY());
                 xMachine.setAndDone(getX(), getY(), xGrass);
             }
@@ -80,7 +80,7 @@ public class XSheep extends XLock {
 
             xMachine.set(x, y, this);
         }
-        for(int i = 0; i < 8; i++){
+        for (int i = 0; i < 8; i++) {
             xObjects[i].getLock().unlock();
         }
 
