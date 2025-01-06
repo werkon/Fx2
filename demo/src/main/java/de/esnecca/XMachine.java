@@ -31,14 +31,14 @@ public class XMachine extends Thread implements EventHandler<javafx.scene.input.
             }
         }
 
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 10; i++) {
             int x = (int) (Math.random() * width);
             int y = (int) (Math.random() * height);
             while (!createNewSheep(x, y))
                 ;
         }
 
-        xThreads = new XThread[32];
+        xThreads = new XThread[16];
         for (int i = 0; i < xThreads.length; i++) {
             xThreads[i] = new XThread(this);
             xThreads[i].start();
@@ -157,11 +157,19 @@ public class XMachine extends Thread implements EventHandler<javafx.scene.input.
     }
 
     @Override
-    public void handle(MouseEvent e) {
+    public synchronized void handle(MouseEvent e) {
         System.out.println("Mouse clicked at " + e.getX() + ", " + e.getY());
 
-        XObject xSheep = new XSheep((int) e.getX(), (int) e.getY(), this);
-        setNew((int) e.getX(), (int) e.getY(), xSheep);
+        XObject old = field.getAndLock((int) e.getX(), (int) e.getY());
+        if (old != null) {
+            int age = 0;
+            if( old instanceof XGrass) {
+                age = ((XGrass)old).getAge();
+            }
+            old.getLock().unlock();
+            XObject xObject = new XWolf((int) e.getX(), (int) e.getY(), age, this);
+            setNew((int) e.getX(), (int) e.getY(), xObject);
+        }
     }
 
     public XObject getTodoAndLock() {
@@ -181,6 +189,7 @@ public class XMachine extends Thread implements EventHandler<javafx.scene.input.
 
     public synchronized void doneToDo() {
         done.analyze();
+        // System.out.println("Done: " + done.size() + ", Todo: " + todo.size());
         todo = done;
         done = new XQueue();
     }

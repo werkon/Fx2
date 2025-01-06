@@ -21,7 +21,7 @@ public class XSheep extends XLock {
     public boolean iterate() {
         super.iterate();
 
-        food -= 10;
+        food -= 12;
 
         if (food <= 0) {
             getxMachine().createNewGrass(getX(), getY(), 0);
@@ -45,7 +45,7 @@ public class XSheep extends XLock {
             }
         }
         if (idx >= 0) {
-            food += age / 10;
+            food += age / 5;
             if (food > 255) {
                 food = 255 / 2;
                 XSheep xSheep = new XSheep(getX(), getY(), getxMachine());
@@ -70,11 +70,17 @@ public class XSheep extends XLock {
 
     @Override
     public int getG() {
+        if(food < 128) {
+            return 128;
+        }
         return food;
     }
 
     @Override
     public int getR() {
+        if(food < 128) {
+            return 128;
+        }
         return food;
     }
 
