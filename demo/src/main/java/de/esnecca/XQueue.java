@@ -1,5 +1,6 @@
 package de.esnecca;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -15,10 +16,10 @@ public class XQueue {
     }
 
     public synchronized XObject getAndLock() {
-        while(!ll.isEmpty()){
+        while (!ll.isEmpty()) {
             XObject xObject = ll.removeFirst();
             boolean locked = xObject.getLock().tryLock();
-            if(locked){
+            if (locked) {
                 return xObject;
             } else {
                 ll.add(xObject);
@@ -35,26 +36,29 @@ public class XQueue {
         return ll.size();
     }
 
-    public void ana(){
-        int grass = 0;
-        int sheep = 0;
-        int alive = 0;
+    public void analyze() {
 
+        int alive = 0;
         Iterator<XObject> it = ll.iterator();
-        while(it.hasNext()) {
+        HashMap<String, Integer> map = new HashMap<String, Integer>();
+        while (it.hasNext()) {
             XObject xObject = it.next();
-            if(xObject.isAlive()){
+            if (xObject.isAlive()) {
                 ++alive;
             }
-            if(xObject instanceof XGrass){
-                ++grass;
+            String className = xObject.getClass().getName();
+            if (map.containsKey(className)) {
+                map.put(className, map.get(className) + 1);
+            } else {
+                map.put(className, 1);
             }
-            if(xObject instanceof XSheep){
-                ++sheep;
-            }
+        }
+        System.out.print("Alive: " + alive);
+        for (String key : map.keySet()) {
+            System.out.print(", " + key.substring(key.lastIndexOf('.') + 1) + ": " + map.get(key));
+        }
+        System.out.println();
 
-          }
-      System.out.println("Grass: " + grass + ", Sheep: " + sheep + ", Alive: " + alive);
     }
 
 }
