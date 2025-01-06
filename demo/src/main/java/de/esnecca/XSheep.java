@@ -11,11 +11,9 @@ public class XSheep extends XLock {
     }
 
     int food;
-    XMachine xMachine;
 
     XSheep(int x, int y, XMachine xMachine) {
-        super(x, y);
-        this.xMachine = xMachine;
+        super(x, y, xMachine);
         food = 255 / 2;
     }
 
@@ -30,25 +28,9 @@ public class XSheep extends XLock {
             return true;
         }
 
-        XObject xObjects[] = new XObject[8];
-
-        int random = (int) (Math.random() * 8);
-        for (int i = 0; i < 8; i++) {
-            int dr = (i + random) % 8;
-            int nx = (getX() + XLock.dx[dr] + xMachine.getWidth()) % xMachine.getWidth();
-            int ny = (getY() + XLock.dy[dr] + xMachine.getHeight()) % xMachine.getHeight();
-
-            XObject xObject = xMachine.getAndLock(nx, ny);
-            if (xObject == null) {
-                for (int j = 0; j < 8; j++) {
-                    if (xObjects[j] != null) {
-                        xObjects[j].getLock().unlock();
-                    }
-                }
-                return false;
-            }
-
-            xObjects[i] = xObject;
+        XObject xObjects[] = reserve();
+        if (xObjects == null) {
+            return false;
         }
 
         int idx = -1;
@@ -80,9 +62,8 @@ public class XSheep extends XLock {
 
             xMachine.set(x, y, this);
         }
-        for (int i = 0; i < 8; i++) {
-            xObjects[i].getLock().unlock();
-        }
+
+        free(xObjects);
 
         return true;
     }
