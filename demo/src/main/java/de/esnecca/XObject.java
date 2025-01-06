@@ -3,9 +3,9 @@ package de.esnecca;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class XObject {
-    int x, y;
-    boolean isAlive;
-    ReentrantLock lock;
+    private int x, y;
+    private boolean isAlive;
+    private ReentrantLock lock;
 
     XObject(int x, int y) {
         this.x = x;

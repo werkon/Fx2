@@ -2,10 +2,10 @@ package de.esnecca;
 
 public class XLock extends XObject{
 
-	static int[] dx = {-1, -1, -1,  0, 0,  1, 1, 1};
-    static int[] dy = {-1,  0,  1, -1, 1, -1, 0, 1};
+	private static final int[] dx = {-1, -1, -1,  0, 0,  1, 1, 1};
+    private static final int[] dy = {-1,  0,  1, -1, 1, -1, 0, 1};
 
-	XMachine xMachine;
+	private XMachine xMachine;
 
     public XLock(int x, int y, XMachine xMachine) {
 		super(x, y);
@@ -42,6 +42,10 @@ public class XLock extends XObject{
 				xObjects[i].getLock().unlock();
 			}
 		}
+	}
+
+	public XMachine getxMachine() {
+		return xMachine;
 	}
 
 }

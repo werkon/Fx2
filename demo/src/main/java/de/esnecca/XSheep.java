@@ -24,7 +24,7 @@ public class XSheep extends XLock {
         food -= 10;
 
         if (food <= 0) {
-            xMachine.createNewGrass(x, y, 0);
+            getxMachine().createNewGrass(getX(), getY(), 0);
             return true;
         }
 
@@ -48,19 +48,19 @@ public class XSheep extends XLock {
             food += age / 10;
             if (food > 255) {
                 food = 255 / 2;
-                XSheep xSheep = new XSheep(getX(), getY(), xMachine);
-                xMachine.setAndDone(getX(), getY(), xSheep);
+                XSheep xSheep = new XSheep(getX(), getY(), getxMachine());
+                getxMachine().setAndDone(getX(), getY(), xSheep);
             } else {
                 XGrass xGrass = new XGrass(getX(), getY());
-                xMachine.setAndDone(getX(), getY(), xGrass);
+                getxMachine().setAndDone(getX(), getY(), xGrass);
             }
 
-            x = xObjects[idx].getX();
-            y = xObjects[idx].getY();
+            setX(xObjects[idx].getX());
+            setY(xObjects[idx].getY());
 
             xObjects[idx].kill();
 
-            xMachine.set(x, y, this);
+            getxMachine().set(getX(), getY(), this);
         }
 
         free(xObjects);
