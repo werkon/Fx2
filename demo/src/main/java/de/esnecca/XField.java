@@ -23,6 +23,11 @@ public class XField {
         }
     }
 
+    public synchronized XObject get(int x, int y) {
+        XObject xObject = field[x][y];
+        return xObject;
+    }
+
     public synchronized void set(int x, int y, XObject xObject) {
         field[x][y] = xObject;
     }

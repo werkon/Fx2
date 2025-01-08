@@ -36,7 +36,7 @@ public class XQueue {
         return ll.size();
     }
 
-    public void analyze() {
+    public synchronized void analyze() {
 
         int alive = 0;
         Iterator<XObject> it = ll.iterator();

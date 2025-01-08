@@ -100,9 +100,10 @@ public class XMachine extends Thread implements EventHandler<javafx.scene.input.
     private void paintField() {
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
-                XObject xObject = field.getAndLock(i, j);
+                // XObject xObject = field.getAndLock(i, j);
+                XObject xObject = field.get(i, j);
                 xCanvas.set(i, j, xObject.getR(), xObject.getG(), xObject.getB());
-                xObject.getLock().unlock();
+                // xObject.getLock().unlock();
             }
         }
 
@@ -158,17 +159,29 @@ public class XMachine extends Thread implements EventHandler<javafx.scene.input.
 
     @Override
     public synchronized void handle(MouseEvent e) {
+        System.out.println(e.getButton().name());
         System.out.println("Mouse clicked at " + e.getX() + ", " + e.getY());
 
         XObject old = field.getAndLock((int) e.getX(), (int) e.getY());
         if (old != null) {
             int age = 0;
-            if( old instanceof XGrass) {
-                age = ((XGrass)old).getAge();
+            if (old instanceof XGrass) {
+                age = ((XGrass) old).getAge();
             }
             old.getLock().unlock();
-            XObject xObject = new XWolf((int) e.getX(), (int) e.getY(), age, this);
-            setNew((int) e.getX(), (int) e.getY(), xObject);
+            if (e.getButton().name().equals("PRIMARY")) {
+                XObject xObject = new XWolf((int) e.getX(), (int) e.getY(), age, this);
+                setNew((int) e.getX(), (int) e.getY(), xObject);
+            } else {
+                if (e.getButton().name().equals("SECONDARY")) {
+                    XObject xObject = new XWolf2((int) e.getX(), (int) e.getY(), age, this);
+                    setNew((int) e.getX(), (int) e.getY(), xObject);
+                } else {
+                    XObject xObject = new XWolf((int) e.getX(), (int) e.getY(), age, this);
+                    setNew((int) e.getX(), (int) e.getY(), xObject);
+                }
+            }
+
         }
     }
 
