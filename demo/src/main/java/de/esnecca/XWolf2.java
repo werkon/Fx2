@@ -4,25 +4,27 @@ public class XWolf2 extends XLock {
 
     private int sfood;
     private int oldAge;
+    private int direction;
 
     public XWolf2(int x, int y, int oldAge, XMachine xMachine) {
         super(x, y, xMachine);
         this.oldAge = oldAge;
         sfood = 255 / 2;
+        direction = (int) (Math.random() * 8);
     }
 
     @Override
     public boolean iterate() {
         super.iterate();
 
-        sfood -= 1;
+        sfood -= 3;
 
         if (sfood <= 0) {
             getxMachine().createNewGrass(getX(), getY(), 0);
             return true;
         }
 
-        XObject xObjects[] = reserve();
+        XObject xObjects[] = reserve(direction);
         if (xObjects == null) {
             return false;
         }
@@ -63,14 +65,10 @@ public class XWolf2 extends XLock {
         }
 
         idx = -1;
-        int age = 0;
         for (int i = 0; i < 8; i++) {
             if (xObjects[i] instanceof XGrass) {
-                XGrass xGrass = (XGrass) xObjects[i];
-                if (xGrass.getAge() > age) {
-                    idx = i;
-                    age = xGrass.getAge();
-                }
+                idx = i;
+                break;
             }
         }
 

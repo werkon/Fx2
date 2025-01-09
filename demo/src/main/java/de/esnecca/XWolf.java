@@ -22,7 +22,7 @@ public class XWolf extends XLock {
             return true;
         }
 
-        XObject xObjects[] = reserve();
+        XObject xObjects[] = reserve(-1);
         if (xObjects == null) {
             return false;
         }

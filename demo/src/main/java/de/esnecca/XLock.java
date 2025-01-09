@@ -2,8 +2,8 @@ package de.esnecca;
 
 public class XLock extends XObject{
 
-	private static final int[] dx = {-1, -1, -1,  0, 0,  1, 1, 1};
-    private static final int[] dy = {-1,  0,  1, -1, 1, -1, 0, 1};
+	private static final int[] dx = {-1,  0,  1,  1,  1,  0, -1, -1};
+    private static final int[] dy = {-1, -1, -1,  0,  1,  1,  1,  0};
 
 	private XMachine xMachine;
 
@@ -12,10 +12,13 @@ public class XLock extends XObject{
 		this.xMachine = xMachine;
 	}
 
-	public XObject[] reserve() {
-		XObject xObjects[] = new XObject[8];
+	public XObject[] reserve(int random	) {
 
-        int random = (int) (Math.random() * 8);
+		if(random < 0 ){
+        	random = (int) (Math.random() * 8);
+		}
+
+		XObject xObjects[] = new XObject[8];
         for (int i = 0; i < 8; i++) {
             int dr = (i + random) % 8;
             int nx = (getX() + XLock.dx[dr] + xMachine.getWidth()) % xMachine.getWidth();

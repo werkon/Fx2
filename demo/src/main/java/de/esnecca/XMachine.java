@@ -31,7 +31,7 @@ public class XMachine extends Thread implements EventHandler<javafx.scene.input.
             }
         }
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 0; i++) {
             int x = (int) (Math.random() * width);
             int y = (int) (Math.random() * height);
             while (!createNewSheep(x, y))
@@ -177,7 +177,7 @@ public class XMachine extends Thread implements EventHandler<javafx.scene.input.
                     XObject xObject = new XWolf2((int) e.getX(), (int) e.getY(), age, this);
                     setNew((int) e.getX(), (int) e.getY(), xObject);
                 } else {
-                    XObject xObject = new XWolf((int) e.getX(), (int) e.getY(), age, this);
+                    XObject xObject = new XSheep((int) e.getX(), (int) e.getY(), this);
                     setNew((int) e.getX(), (int) e.getY(), xObject);
                 }
             }
