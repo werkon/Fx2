@@ -170,11 +170,11 @@ public class XMachine extends Thread implements EventHandler<javafx.scene.input.
             }
             old.getLock().unlock();
             if (e.getButton().name().equals("PRIMARY")) {
-                XObject xObject = new XWolf((int) e.getX(), (int) e.getY(), age, this);
+                XObject xObject = new XWolf2((int) e.getX(), (int) e.getY(), age, this);
                 setNew((int) e.getX(), (int) e.getY(), xObject);
             } else {
                 if (e.getButton().name().equals("SECONDARY")) {
-                    XObject xObject = new XWolf2((int) e.getX(), (int) e.getY(), age, this);
+                    XObject xObject = new XWolf3((int) e.getX(), (int) e.getY(), age, this);
                     setNew((int) e.getX(), (int) e.getY(), xObject);
                 } else {
                     XObject xObject = new XSheep((int) e.getX(), (int) e.getY(), this);
