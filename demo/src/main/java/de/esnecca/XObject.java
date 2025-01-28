@@ -46,7 +46,7 @@ public class XObject {
         return true;
     }
     
-    public boolean iterate() {
+    public boolean iterate(XCanvas xCanvas) {
         return true;
     }
 

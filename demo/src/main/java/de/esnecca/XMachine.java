@@ -90,22 +90,18 @@ public class XMachine extends Thread implements EventHandler<javafx.scene.input.
             } catch (InterruptedException e) {
             }
         }
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-        }
         paintField();
     }
 
     private void paintField() {
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
-                // XObject xObject = field.getAndLock(i, j);
-                XObject xObject = field.get(i, j);
-                xCanvas.set(i, j, xObject.getR(), xObject.getG(), xObject.getB());
-                // xObject.getLock().unlock();
-            }
-        }
+        // for (int i = 0; i < width; i++) {
+        // for (int j = 0; j < height; j++) {
+        // // XObject xObject = field.getAndLock(i, j);
+        // XObject xObject = field.get(i, j);
+        // xCanvas.set(i, j, xObject.getR(), xObject.getG(), xObject.getB());
+        // // xObject.getLock().unlock();
+        // }
+        // }
 
         xCanvas.paint();
     }
@@ -113,13 +109,13 @@ public class XMachine extends Thread implements EventHandler<javafx.scene.input.
     public void step() {
         XObject xObject = getTodoAndLock();
         if (xObject != null) {
-            boolean ok = xObject.iterate();
+            boolean ok = xObject.iterate(xCanvas);
             if (ok) {
                 if (xObject.isAlive()) {
                     done.add(xObject);
                 }
             } else {
-                todo.add(xObject);
+                done.add(xObject);
             }
             xObject.getLock().unlock();
         }
@@ -201,8 +197,8 @@ public class XMachine extends Thread implements EventHandler<javafx.scene.input.
     }
 
     public synchronized void doneToDo() {
-        done.analyze();
-        // System.out.println("Done: " + done.size() + ", Todo: " + todo.size());
+        // done.analyze();
+        System.out.println("Done: " + done.size() + ", Todo: " + todo.size());
         todo = done;
         done = new XQueue();
     }

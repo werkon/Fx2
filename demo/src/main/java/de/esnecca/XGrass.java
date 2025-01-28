@@ -18,11 +18,12 @@ public class XGrass extends XObject {
     }
 
     @Override
-    public boolean iterate() {
-        super.iterate();
+    public boolean iterate(XCanvas xCanvas) {
+        super.iterate(xCanvas);
         if(++age > 255){
             age = 255;
         }
+        xCanvas.set(getX(), getY(), getR(), getG(), getB());
         return true;
     }
 

@@ -14,8 +14,8 @@ public class XWolf3 extends XLock {
     }
 
     @Override
-    public boolean iterate() {
-        super.iterate();
+    public boolean iterate(XCanvas xCanvas) {
+        super.iterate(xCanvas);
 
         sfood -= 3;
 
@@ -60,6 +60,7 @@ public class XWolf3 extends XLock {
             xObjects[idx].kill();
 
             getxMachine().set(getX(), getY(), this);
+            xCanvas.set(getX(), getY(), getR(), getG(), getB());
             free(xObjects);
             return true;
 
@@ -85,11 +86,13 @@ public class XWolf3 extends XLock {
             xObjects[idx].kill();
 
             getxMachine().set(getX(), getY(), this);
+            xCanvas.set(getX(), getY(), getR(), getG(), getB());
             free(xObjects);
             return true;
 
         }
 
+        xCanvas.set(getX(), getY(), getR(), getG(), getB());
         free(xObjects);
         return true;
     }

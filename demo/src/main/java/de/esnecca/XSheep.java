@@ -18,8 +18,8 @@ public class XSheep extends XLock {
     }
 
     @Override
-    public boolean iterate() {
-        super.iterate();
+    public boolean iterate(XCanvas xCanvas) {
+        super.iterate(xCanvas);
 
         food -= 12;
 
@@ -62,6 +62,8 @@ public class XSheep extends XLock {
 
             getxMachine().set(getX(), getY(), this);
         }
+
+        xCanvas.set(getX(), getY(), getR(), getG(), getB());
 
         free(xObjects);
 
