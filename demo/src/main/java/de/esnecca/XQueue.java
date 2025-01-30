@@ -15,17 +15,22 @@ public class XQueue {
         ll.add(xObject);
     }
 
-    public synchronized XObject getAndLock() {
-        while (!ll.isEmpty()) {
-            XObject xObject = ll.removeFirst();
-            boolean locked = xObject.getLock().tryLock();
-            if (locked) {
-                return xObject;
-            } else {
-                ll.add(xObject);
-            }
-        }
-        return null;
+    public synchronized XObject get() {
+       if(ll.isEmpty()){
+           return null;
+       }
+       return ll.removeFirst();
+           
+        // while (!ll.isEmpty()) {
+        //     XObject xObject = ll.removeFirst();
+        //     boolean locked = xObject.getLock().tryLock();
+        //     if (locked) {
+        //         return xObject;
+        //     } else {
+        //         ll.add(xObject);
+        //     }
+        // }
+        // return null;
     }
 
     public synchronized boolean isEmpty() {

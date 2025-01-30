@@ -21,7 +21,7 @@ public class XSheep extends XLock {
     public boolean iterate(XCanvas xCanvas) {
         super.iterate(xCanvas);
 
-        food -= 12;
+        food -= 13;
 
         if (food <= 0) {
             getxMachine().createNewGrass(getX(), getY(), 0);

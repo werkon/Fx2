@@ -38,7 +38,7 @@ public class XMachine extends Thread implements EventHandler<javafx.scene.input.
                 ;
         }
 
-        xThreads = new XThread[16];
+        xThreads = new XThread[32];
         for (int i = 0; i < xThreads.length; i++) {
             xThreads[i] = new XThread(this);
             xThreads[i].start();
@@ -86,7 +86,7 @@ public class XMachine extends Thread implements EventHandler<javafx.scene.input.
         doneToDo();
         while (!todo.isEmpty()) {
             try {
-                Thread.sleep(100);
+                Thread.sleep(10);
             } catch (InterruptedException e) {
             }
         }
@@ -182,14 +182,13 @@ public class XMachine extends Thread implements EventHandler<javafx.scene.input.
     }
 
     public XObject getTodoAndLock() {
-        while (!todo.isEmpty()) {
-            XObject xObject = todo.getAndLock();
-            if (xObject != null) {
-                if (xObject.isAlive()) {
+        XObject xObject = todo.get();
+        if (xObject != null) {
+            if (xObject.isAlive()) {
+                if(xObject.getLock().tryLock()){
                     return xObject;
-                } else {
-                    xObject.getLock().unlock();
-                    // System.out.println("Dead object found");
+                }else{
+                    done.add(xObject);
                 }
             }
         }
@@ -197,7 +196,7 @@ public class XMachine extends Thread implements EventHandler<javafx.scene.input.
     }
 
     public synchronized void doneToDo() {
-        // done.analyze();
+        //done.analyze();
         System.out.println("Done: " + done.size() + ", Todo: " + todo.size());
         todo = done;
         done = new XQueue();
