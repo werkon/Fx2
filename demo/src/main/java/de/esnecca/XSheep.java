@@ -1,5 +1,7 @@
 package de.esnecca;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 public class XSheep extends XLock {
 
     public int getFood() {
@@ -21,7 +23,7 @@ public class XSheep extends XLock {
     public boolean iterate(XCanvas xCanvas) {
         super.iterate(xCanvas);
 
-        food -= 12;
+        food -= 13;
 
         if (food <= 0) {
             getxMachine().createNewGrass(getX(), getY(), 0);
@@ -35,7 +37,7 @@ public class XSheep extends XLock {
 
         int idx = -1;
         int age = 0;
-        if(Math.random() < 0.5) {
+        if(ThreadLocalRandom.current().nextInt(2)==0) {
             for (int i = 0; i < 8; i++) {
                 if (xObjects[i] instanceof XGrass) {
                     XGrass xGrass = (XGrass) xObjects[i];

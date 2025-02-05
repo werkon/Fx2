@@ -1,5 +1,7 @@
 package de.esnecca;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 public class XLock extends XObject{
 
 	private static final int[] dx = {-1,  0,  1,  1,  1,  0, -1, -1};
@@ -15,7 +17,7 @@ public class XLock extends XObject{
 	public XObject[] reserve(int random	) {
 
 		if(random < 0 ){
-        	random = (int) (Math.random() * 8);
+        	random = ThreadLocalRandom.current().nextInt(8);
 		}
 
 		XObject xObjects[] = new XObject[8];

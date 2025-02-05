@@ -19,10 +19,16 @@ public class XQueue {
         ll.addFirst(xObject);
     }
 
+    public synchronized void addMany(XQueue xQueue) {
+        while(!xQueue.isEmpty()) {
+            ll.addLast(xQueue.get());
+        }
+    }
+
     public synchronized XObject[] getMany() {
 
         int size = ll.size();
-        size = size > 100 ? 100 : size;
+        size = size > 1000 ? 1000 : size;
         XObject[] xObjects = new XObject[size];
         for (int i = 0; i < size; i++) {
             xObjects[i] = ll.removeFirst();

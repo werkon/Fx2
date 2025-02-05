@@ -1,6 +1,6 @@
 package de.esnecca;
 
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
@@ -37,15 +37,15 @@ public class XMachine extends Thread implements EventHandler<javafx.scene.input.
         }
 
         for (int i = 0; i < 0; i++) {
-            int x = (int) (Math.random() * width);
-            int y = (int) (Math.random() * height);
+            int x = ThreadLocalRandom.current().nextInt(width);
+            int y = ThreadLocalRandom.current().nextInt(height);
             while (!createNewSheep(x, y))
                 ;
         }
 
         XQueue xQueue = new XQueue(width*height*2);
         while (!done.isEmpty()) {
-            if (Math.random() < 0.5) {
+            if (ThreadLocalRandom.current().nextInt(2)==0) {
                 XObject xObject = done.get();
                 xQueue.addFirst(xObject);
             } else {
@@ -120,16 +120,16 @@ public class XMachine extends Thread implements EventHandler<javafx.scene.input.
             } catch (InterruptedException e) {
             }
         }
-        try {
-            Thread.sleep(10);
-        } catch (InterruptedException e) {
-        }
-        while (!todo.isEmpty() || getRt() > 0) {
-            try {
-                Thread.sleep(10);
-            } catch (InterruptedException e) {
-            }
-        }
+        // try {
+        //     Thread.sleep(10);
+        // } catch (InterruptedException e) {
+        // }
+        // while (!todo.isEmpty() || getRt() > 0) {
+        //     try {
+        //         Thread.sleep(10);
+        //     } catch (InterruptedException e) {
+        //     }
+        // }
         paintField();
     }
 
@@ -165,6 +165,7 @@ public class XMachine extends Thread implements EventHandler<javafx.scene.input.
         XObject xObjects[] = todo.getMany();
         if (xObjects.length > 0) {
             incRt();
+            XQueue ldone = new XQueue(xObjects.length);
             for (int i = 0; i < xObjects.length; i++) {
                 XObject xObject = xObjects[i];
                 if (xObject.isAlive()) {
@@ -172,18 +173,18 @@ public class XMachine extends Thread implements EventHandler<javafx.scene.input.
                         boolean ok = xObject.iterate(xCanvas);
                         if (ok) {
                             if (xObject.isAlive()) {
-                                done.add(xObject);
+                                ldone.add(xObject);
                             }
                         } else {
-                            done.add(xObject);
+                            ldone.add(xObject);
                         }
                         xObject.getLock().unlock();
                     } else {
-                        done.add(xObject);
+                        ldone.add(xObject);
                     }
                 }
-
             }
+            done.addMany(ldone);
             decRt();
         }
     }
@@ -263,8 +264,8 @@ public class XMachine extends Thread implements EventHandler<javafx.scene.input.
     }
 
     public synchronized void doneToDo() {
-        //done.analyze();
-        System.out.println("Done: " + done.size() + ", Todo: " + todo.size());
+        // done.analyze();
+        //System.out.println("Done: " + done.size() + ", Todo: " + todo.size());
         XQueue tmp = todo;
         todo = done;
         done = tmp; // new XQueue(width*height*2);

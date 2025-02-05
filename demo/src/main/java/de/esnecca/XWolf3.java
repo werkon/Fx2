@@ -1,5 +1,7 @@
 package de.esnecca;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 public class XWolf3 extends XLock {
 
     private int sfood;
@@ -10,7 +12,7 @@ public class XWolf3 extends XLock {
         super(x, y, xMachine);
         this.oldAge = oldAge;
         sfood = 255 / 2;
-        direction = (int) (Math.random() * 8);
+        direction = ThreadLocalRandom.current().nextInt(8);
     }
 
     @Override
