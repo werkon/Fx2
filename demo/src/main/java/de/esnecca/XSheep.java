@@ -21,7 +21,7 @@ public class XSheep extends XLock {
     public boolean iterate(XCanvas xCanvas) {
         super.iterate(xCanvas);
 
-        food -= 13;
+        food -= 12;
 
         if (food <= 0) {
             getxMachine().createNewGrass(getX(), getY(), 0);
@@ -35,14 +35,27 @@ public class XSheep extends XLock {
 
         int idx = -1;
         int age = 0;
-        for (int i = 0; i < 8; i++) {
-            if (xObjects[i] instanceof XGrass) {
-                XGrass xGrass = (XGrass) xObjects[i];
-                if (xGrass.getAge() > age) {
-                    idx = i;
-                    age = xGrass.getAge();
+        if(Math.random() < 0.5) {
+            for (int i = 0; i < 8; i++) {
+                if (xObjects[i] instanceof XGrass) {
+                    XGrass xGrass = (XGrass) xObjects[i];
+                    if (xGrass.getAge() > age) {
+                        idx = i;
+                        age = xGrass.getAge();
+                    }
                 }
             }
+        } else {
+            for (int i = 7; i >= 0; i--) {
+                if (xObjects[i] instanceof XGrass) {
+                    XGrass xGrass = (XGrass) xObjects[i];
+                    if (xGrass.getAge() > age) {
+                        idx = i;
+                        age = xGrass.getAge();
+                    }
+                }
+            }
+
         }
         if (idx >= 0) {
             food += age / 5;

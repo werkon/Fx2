@@ -1,26 +1,59 @@
 package de.esnecca;
 
+import java.util.ArrayDeque;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
 
 public class XQueue {
-    private LinkedList<XObject> ll;
+    private ArrayDeque<XObject> ll;
 
-    public XQueue() {
-        ll = new LinkedList<XObject>();
+    public XQueue(int size) {
+        ll = new ArrayDeque<XObject>(size);
     }
 
     public synchronized void add(XObject xObject) {
-        ll.add(xObject);
+        ll.addLast(xObject);
     }
 
+    public synchronized void addFirst(XObject xObject) {
+        ll.addFirst(xObject);
+    }
+
+    public synchronized XObject[] getMany() {
+
+        int size = ll.size();
+        size = size > 100 ? 100 : size;
+        XObject[] xObjects = new XObject[size];
+        for (int i = 0; i < size; i++) {
+            xObjects[i] = ll.removeFirst();
+        }
+        return xObjects;
+
+        // try{
+        //     return ll.removeFirst();
+        // } catch (Exception e) {
+        //     return null;
+        // }
+
+        // while (!ll.isEmpty()) {
+        //     XObject xObject = ll.removeFirst();
+        //     boolean locked = xObject.getLock().tryLock();
+        //     if (locked) {
+        //         return xObject;
+        //     } else {
+        //         ll.add(xObject);
+        //     }
+        // }
+        // return null;
+    }
+
+
     public synchronized XObject get() {
-       if(ll.isEmpty()){
-           return null;
-       }
-       return ll.removeFirst();
-           
+        try{
+            return ll.removeFirst();
+        } catch (Exception e) {
+            return null;
+        }
         // while (!ll.isEmpty()) {
         //     XObject xObject = ll.removeFirst();
         //     boolean locked = xObject.getLock().tryLock();
