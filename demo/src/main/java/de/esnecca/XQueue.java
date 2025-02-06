@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 public class XQueue {
-    private ArrayDeque<XObject> ll;
+    protected ArrayDeque<XObject> ll;
 
     public XQueue(int size) {
         ll = new ArrayDeque<XObject>(size);
@@ -20,8 +20,11 @@ public class XQueue {
     }
 
     public synchronized void addMany(XQueue xQueue) {
-        while(!xQueue.isEmpty()) {
-            ll.addLast(xQueue.get());
+        try{
+            while(true) {
+                ll.addLast(xQueue.ll.removeFirst());
+            }
+        } catch (Exception e) {
         }
     }
 

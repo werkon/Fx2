@@ -87,17 +87,11 @@ public class XSheep extends XLock {
 
     @Override
     public int getG() {
-        if(food < 128) {
-            return 128;
-        }
         return food;
     }
 
     @Override
     public int getR() {
-        if(food < 128) {
-            return 128;
-        }
         return food;
     }
 
