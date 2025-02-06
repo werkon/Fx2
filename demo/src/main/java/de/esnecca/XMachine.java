@@ -1,5 +1,6 @@
 package de.esnecca;
 
+import java.util.Date;
 import java.util.concurrent.ThreadLocalRandom;
 
 import javafx.event.EventHandler;
@@ -18,12 +19,15 @@ public class XMachine extends Thread implements EventHandler<javafx.scene.input.
     private XMainThread xMainThread;
     private int rt;
 
+    private Date date;
+
     XMachine(int width, int height, XCanvas xCanvas) {
         this.width = width;
         this.height = height;
         this.xCanvas = xCanvas;
 
         rt = 0;
+        date = new Date();
 
         field = new XField(width, height);
         todo = new XQueue(width*height*2);
@@ -266,6 +270,12 @@ public class XMachine extends Thread implements EventHandler<javafx.scene.input.
     public synchronized void doneToDo() {
         // done.analyze();
         //System.out.println("Done: " + done.size() + ", Todo: " + todo.size());
+        
+        Date date = new Date();
+        long diff = date.getTime() - this.date.getTime();
+        System.out.println("Done: " + done.size() + ", Todo: " + todo.size() + ", Time: " + diff);
+        this.date = date;
+
         XQueue tmp = todo;
         todo = done;
         done = tmp; // new XQueue(width*height*2);
