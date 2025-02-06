@@ -28,11 +28,7 @@ public class XLock extends XObject{
 
             XObject xObject = xMachine.getAndLock(nx, ny);
             if (xObject == null) {
-                for (int j = 0; j < 8; j++) {
-                    if (xObjects[j] != null) {
-                        xObjects[j].getLock().unlock();
-                    }
-                }
+				free(xObjects);
                 return null;
             }
 
