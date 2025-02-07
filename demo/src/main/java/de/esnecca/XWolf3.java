@@ -69,16 +69,20 @@ public class XWolf3 extends XLock {
         }
 
         idx = -1;
+        int age = 256;
         for (int i = 0; i < 8; i++) {
             if (xObjects[i] instanceof XGrass) {
-                idx = i;
-                break;
+                XGrass xGrass = (XGrass) xObjects[i];
+                if(xGrass.getAge() < age) {
+                    age = xGrass.getAge();
+                    idx = i;
+                }
             }
         }
 
         if (idx >= 0) {
             XGrass xGrass = new XGrass(getX(), getY());
-            xGrass.setAge(oldAge);
+            xGrass.setAge(255);
             getxMachine().setAndDone(getX(), getY(), xGrass);
 
             setX(xObjects[idx].getX());

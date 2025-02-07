@@ -3,6 +3,7 @@ package de.esnecca;
 import java.util.ArrayDeque;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class XQueue {
     protected ArrayDeque<XObject> ll;
@@ -29,9 +30,14 @@ public class XQueue {
     }
 
     public synchronized XObject[] getMany() {
+        int bound = ThreadLocalRandom.current().nextInt(100, 1000);
+        return getMany(bound);
+    }
+
+    public synchronized XObject[] getMany(int bound) {
 
         int size = ll.size();
-        size = size > 1000 ? 1000 : size;
+        size = size > bound ? bound : size;
         XObject[] xObjects = new XObject[size];
         for (int i = 0; i < size; i++) {
             xObjects[i] = ll.removeFirst();
