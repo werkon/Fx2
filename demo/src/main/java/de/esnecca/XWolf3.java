@@ -22,7 +22,7 @@ public class XWolf3 extends XLock {
         sfood -= 3;
 
         if (sfood <= 0) {
-            getxMachine().createNewGrass(getX(), getY(), 0);
+            getxMachine().createNewGrass(getX(), getY(), 255);
             return true;
         }
 

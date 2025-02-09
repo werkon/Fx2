@@ -29,7 +29,7 @@ public class XQueue {
         }
     }
 
-    public synchronized XObject[] getMany() {
+    public XObject[] getMany() {
         int bound = ThreadLocalRandom.current().nextInt(100, 1000);
         return getMany(bound);
     }
