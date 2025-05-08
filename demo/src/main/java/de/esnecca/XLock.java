@@ -4,8 +4,8 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class XLock extends XObject{
 
-	private static final int[] dx = {-1,  0,  1,  1,  1,  0, -1, -1};
-    private static final int[] dy = {-1, -1, -1,  0,  1,  1,  1,  0};
+	private final int[] dx = {-1,  0,  1,  1,  1,  0, -1, -1};
+    private final int[] dy = {-1, -1, -1,  0,  1,  1,  1,  0};
 
 	private XMachine xMachine;
 
@@ -23,8 +23,8 @@ public class XLock extends XObject{
 		XObject xObjects[] = new XObject[8];
         for (int i = 0; i < 8; i++) {
             int dr = (i + random) % 8;
-            int nx = (getX() + XLock.dx[dr] + xMachine.getWidth()) % xMachine.getWidth();
-            int ny = (getY() + XLock.dy[dr] + xMachine.getHeight()) % xMachine.getHeight();
+            int nx = (getX() + dx[dr] + xMachine.getWidth()) % xMachine.getWidth();
+            int ny = (getY() + dy[dr] + xMachine.getHeight()) % xMachine.getHeight();
 
             XObject xObject = xMachine.getAndLock(nx, ny);
             if (xObject == null) {
