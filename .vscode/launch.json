@@ -8,7 +8,8 @@
         "type": "java",
         "name": "Launch Java Program",
         "request": "launch",
-        "mainClass": ""
+        "mainClass": "",
+        "vmArgs" : "--enable-native-access=javafx.graphics"
     },
         {
             "type": "java",
