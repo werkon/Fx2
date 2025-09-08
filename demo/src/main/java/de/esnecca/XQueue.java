@@ -21,12 +21,7 @@ public class XQueue {
     }
 
     public synchronized void addMany(XQueue xQueue) {
-        try{
-            while(true) {
-                ll.addLast(xQueue.ll.removeFirst());
-            }
-        } catch (Exception e) {
-        }
+                ll.addAll(xQueue.ll);
     }
 
     public XObject[] getMany() {
