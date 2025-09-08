@@ -13,7 +13,7 @@ public class XField {
         }
     }
 
-    public synchronized XObject getAndLock(int x, int y) {
+    public   XObject getAndLock(int x, int y) {
         XObject xObject = field[x][y];
         boolean locked = xObject.getLock().tryLock();
         if (locked) {
@@ -23,12 +23,12 @@ public class XField {
         }
     }
 
-    public synchronized XObject get(int x, int y) {
+    public   XObject get(int x, int y) {
         XObject xObject = field[x][y];
         return xObject;
     }
 
-    public synchronized void set(int x, int y, XObject xObject) {
+    public   void set(int x, int y, XObject xObject) {
         field[x][y] = xObject;
     }
 }
