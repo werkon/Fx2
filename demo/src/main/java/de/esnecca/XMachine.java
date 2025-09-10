@@ -30,8 +30,8 @@ public class XMachine extends Thread implements EventHandler<javafx.scene.input.
         date = new Date();
 
         field = new XField(width, height);
-        todo = new XQueue(width*height*2);
-        done = new XQueue(width*height*2);
+        todo = new XQueue(width * height * 2);
+        done = new XQueue(width * height * 2);
 
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
@@ -47,15 +47,15 @@ public class XMachine extends Thread implements EventHandler<javafx.scene.input.
                 ;
         }
 
-        XQueue xQueue = new XQueue(width*height*2);
+        XQueue xQueue = new XQueue(width * height * 2);
         while (!done.isEmpty()) {
-            if (ThreadLocalRandom.current().nextInt(2)==0) {
+            if (ThreadLocalRandom.current().nextInt(2) == 0) {
                 XObject xObject = done.get();
                 xQueue.addFirst(xObject);
             } else {
                 XObject xObject = done.get();
                 xQueue.add(xObject);
-                
+
             }
         }
         done = xQueue;
@@ -125,14 +125,14 @@ public class XMachine extends Thread implements EventHandler<javafx.scene.input.
             }
         }
         // try {
-        //     Thread.sleep(10);
+        // Thread.sleep(10);
         // } catch (InterruptedException e) {
         // }
         // while (!todo.isEmpty() || getRt() > 0) {
-        //     try {
-        //         Thread.sleep(10);
-        //     } catch (InterruptedException e) {
-        //     }
+        // try {
+        // Thread.sleep(10);
+        // } catch (InterruptedException e) {
+        // }
         // }
         paintField();
     }
@@ -172,6 +172,8 @@ public class XMachine extends Thread implements EventHandler<javafx.scene.input.
             XQueue ldone = new XQueue(xObjects.length);
             for (int i = 0; i < xObjects.length; i++) {
                 XObject xObject = xObjects[i];
+                if (xObject == null)
+                    break;
                 if (xObject.isAlive()) {
                     if (xObject.getLock().tryLock()) {
                         boolean ok = xObject.iterate(xCanvas);
@@ -269,8 +271,8 @@ public class XMachine extends Thread implements EventHandler<javafx.scene.input.
 
     public synchronized void doneToDo() {
         // done.analyze();
-        //System.out.println("Done: " + done.size() + ", Todo: " + todo.size());
-        
+        // System.out.println("Done: " + done.size() + ", Todo: " + todo.size());
+
         Date date = new Date();
         long diff = date.getTime() - this.date.getTime();
         System.out.println("Done: " + done.size() + ", Todo: " + todo.size() + ", Time: " + diff);

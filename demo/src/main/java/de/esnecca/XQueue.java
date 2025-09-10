@@ -35,7 +35,12 @@ public class XQueue {
         size = size > bound ? bound : size;
         XObject[] xObjects = new XObject[size];
         for (int i = 0; i < size; i++) {
-            xObjects[i] = ll.removeFirst();
+//            XObject xObject = get();
+            XObject xObject = ll.pollFirst();
+            if(xObject==null){
+               break; 
+            }
+            xObjects[i] = xObject;
         }
         return xObjects;
 
@@ -59,21 +64,7 @@ public class XQueue {
 
 
     public synchronized XObject get() {
-        try{
-            return ll.removeFirst();
-        } catch (Exception e) {
-            return null;
-        }
-        // while (!ll.isEmpty()) {
-        //     XObject xObject = ll.removeFirst();
-        //     boolean locked = xObject.getLock().tryLock();
-        //     if (locked) {
-        //         return xObject;
-        //     } else {
-        //         ll.add(xObject);
-        //     }
-        // }
-        // return null;
+        return ll.pollFirst();
     }
 
     public synchronized boolean isEmpty() {
