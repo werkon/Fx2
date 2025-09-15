@@ -124,46 +124,12 @@ public class XMachine extends Thread implements EventHandler<javafx.scene.input.
             } catch (InterruptedException e) {
             }
         }
-        // try {
-        // Thread.sleep(10);
-        // } catch (InterruptedException e) {
-        // }
-        // while (!todo.isEmpty() || getRt() > 0) {
-        // try {
-        // Thread.sleep(10);
-        // } catch (InterruptedException e) {
-        // }
-        // }
         paintField();
     }
 
     private void paintField() {
-        // for (int i = 0; i < width; i++) {
-        // for (int j = 0; j < height; j++) {
-        // // XObject xObject = field.getAndLock(i, j);
-        // XObject xObject = field.get(i, j);
-        // xCanvas.set(i, j, xObject.getR(), xObject.getG(), xObject.getB());
-        // // xObject.getLock().unlock();
-        // }
-        // }
-
         xCanvas.paint();
     }
-
-    // public void step() {
-    // XObject xObject = getTodoAndLock();
-    // if (xObject != null) {
-    // boolean ok = xObject.iterate(xCanvas);
-    // if (ok) {
-    // if (xObject.isAlive()) {
-    // done.add(xObject);
-    // }
-    // } else {
-    // done.add(xObject);
-    // }
-    // xObject.getLock().unlock();
-    // }
-    // }
 
     public void step() {
         XObject xObjects[] = todo.getMany();
