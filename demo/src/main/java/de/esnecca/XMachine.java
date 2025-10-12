@@ -201,8 +201,8 @@ public class XMachine extends Thread implements EventHandler<javafx.scene.input.
         XObject old = field.getAndLock((int) e.getX(), (int) e.getY());
         if (old != null) {
             int age = 0;
-            if (old instanceof XGrass) {
-                age = ((XGrass) old).getAge();
+            if (old instanceof XGrass grass) {
+                age = grass.getAge();
             }
             old.getLock().unlock();
             if (e.getButton().name().equals("PRIMARY")) {
