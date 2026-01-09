@@ -107,6 +107,8 @@ public class XMachine extends Thread implements EventHandler<javafx.scene.input.
         stopIt();
         for (int i = 0; i < xThreads.length; i++) {
             xThreads[i].stopIt();
+        }
+        for (int i = 0; i < xThreads.length; i++) {
             while (xThreads[i].isAlive()) {
                 try {
                     Thread.sleep(100);
@@ -201,8 +203,8 @@ public class XMachine extends Thread implements EventHandler<javafx.scene.input.
         XObject old = field.getAndLock((int) e.getX(), (int) e.getY());
         if (old != null) {
             int age = 0;
-            if (old instanceof XGrass grass) {
-                age = grass.getAge();
+            if (old instanceof XGrass) {
+                age = ((XGrass) old).getAge();
             }
             old.getLock().unlock();
             if (e.getButton().name().equals("PRIMARY")) {

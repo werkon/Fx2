@@ -39,7 +39,8 @@ public class XSheep extends XLock {
         int age = 0;
         if(ThreadLocalRandom.current().nextInt(2)==0) {
             for (int i = 0; i < 8; i++) {
-                if (xObjects[i] instanceof XGrass xGrass) {
+                if (xObjects[i] instanceof XGrass) {
+                    XGrass xGrass = (XGrass) xObjects[i];
                     if (xGrass.getAge() > age) {
                         idx = i;
                         age = xGrass.getAge();
@@ -48,7 +49,8 @@ public class XSheep extends XLock {
             }
         } else {
             for (int i = 7; i >= 0; i--) {
-                if (xObjects[i] instanceof XGrass xGrass) {
+                if (xObjects[i] instanceof XGrass) {
+                    XGrass xGrass = (XGrass) xObjects[i];
                     if (xGrass.getAge() > age) {
                         idx = i;
                         age = xGrass.getAge();

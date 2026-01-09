@@ -34,7 +34,8 @@ public class XWolf3 extends XLock {
         int idx = -1;
         int food = 0;
         for (int i = 0; i < 8; i++) {
-            if (xObjects[i] instanceof XSheep xSheep) {
+            if (xObjects[i] instanceof XSheep) {
+                XSheep xSheep = (XSheep) xObjects[i];
                 if (xSheep.getFood() > food) {
                     idx = i;
                     food = xSheep.getFood();
@@ -70,7 +71,8 @@ public class XWolf3 extends XLock {
         idx = -1;
         int age = 256;
         for (int i = 0; i < 8; i++) {
-            if (xObjects[i] instanceof XGrass xGrass) {
+            if (xObjects[i] instanceof XGrass) {
+                XGrass xGrass = (XGrass) xObjects[i];
                 if(xGrass.getAge() < age) {
                     age = xGrass.getAge();
                     idx = i;

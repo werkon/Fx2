@@ -30,7 +30,8 @@ public class XWolf extends XLock {
         int idx = -1;
         int food = 0;
         for (int i = 0; i < 8; i++) {
-            if (xObjects[i] instanceof XSheep xSheep) {
+            if (xObjects[i] instanceof XSheep) {
+                XSheep xSheep = (XSheep) xObjects[i];
                 if (xSheep.getFood() > food) {
                     idx = i;
                     food = xSheep.getFood();
