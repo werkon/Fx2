@@ -35,12 +35,12 @@ public class XMachine extends Thread implements EventHandler<javafx.scene.input.
 
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
-                while (!createNewGrass(i, j, 255 / 2))
+                while (!createNewGrass(i, j, 255 / 4))
                     ;
             }
         }
 
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 200; i++) {
             int x = ThreadLocalRandom.current().nextInt(width);
             int y = ThreadLocalRandom.current().nextInt(height);
             while (!createNewSheep(x, y))

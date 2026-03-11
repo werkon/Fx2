@@ -19,6 +19,11 @@ public class XSheep extends XLock {
         food = 255 / 2;
     }
 
+    XSheep(int x, int y, int food,XMachine xMachine) {
+        super(x, y, xMachine);
+        this.food = food;
+    }
+
     @Override
     public boolean iterate(XCanvas xCanvas) {
         super.iterate(xCanvas);
@@ -62,8 +67,8 @@ public class XSheep extends XLock {
         if (idx >= 0) {
             food += age / 5;
             if (food > 255) {
-                food = 255 / 2;
-                XSheep xSheep = new XSheep(getX(), getY(), getxMachine());
+                food = 255 / 10;
+                XSheep xSheep = new XSheep(getX(), getY(), food, getxMachine());
                 getxMachine().setAndDone(getX(), getY(), xSheep);
             } else {
                 XGrass xGrass = new XGrass(getX(), getY());
